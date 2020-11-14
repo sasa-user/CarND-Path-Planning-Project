@@ -65,6 +65,22 @@ the path has processed since last time.
 
 2. There will be some latency between the simulator running and the path planner returning a path, with optimized code usually its not very long maybe just 1-3 time steps. During this delay the simulator will continue using points that it was last given, because of this its a good idea to store the last points you have used so you can have a smooth transition. previous_path_x, and previous_path_y can be helpful for this transition since they show the last points given to the simulator controller with the processed points already removed. You would either return a path that extends this previous path or make sure to create a new path that has a smooth transition with this last path.
 
+3. Model walktrough:
+
+    Implementation was mostly gathered from lessons q&a section. The code is commented out, parts of the model properly named and readable.
+    - At the begging of the main() function initial veriables are set for the car state on telemetry event;
+    - defining a path made up of (x,y) points that the car will visit sequentially every .02 seconds;
+    - first going through sensor fusion vector for checks of the state of the road;
+    - first checking for the car in front in our current lane for the speed corection;
+    - then checking left and right lanes for possible lane change
+    - adjusting speed of the vehicle and setting for the lane change depending of the cost and options;
+    - Create a list of widely spaced (x, y) waypoints, evenly spaced at 30m;
+    - Either we'll reference the starting point as where the car is or at the previous paths end point;
+    - Interpolating waypoints with a spline and fill it in with more points that control speed;
+    - Calculating how to break up spline points so that we travel at our desired reference velocity;
+    - Fill up the rest of our path planner after filling it with privious points, here we'll always output 50 points;
+    - Adding points to the vector used by simulator.
+
 ## Tips
 
 A really helpful resource for doing this project and creating smooth trajectories was using http://kluge.in-chemnitz.de/opensource/spline/, the spline function is in a single hearder file is really easy to use.
@@ -139,7 +155,3 @@ that's just a guess.
 
 One last note here: regardless of the IDE used, every submitted project must
 still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
